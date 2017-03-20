@@ -10,6 +10,7 @@ Marina Billes, Anders Møller, and Michael Pradel. Systematic Black-Box Analysis
 
 * Java version 8 or higher.
 * JavaFX version 8 or higher.
+* Firefox 45 ESR.
 * Maven.
 * Selenium Grid server and clients running in separate X server sessions on the same machine.
 

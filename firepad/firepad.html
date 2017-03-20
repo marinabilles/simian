@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Firepad</title>
+
+    <script>
+        var originalWarn = console.warn;
+        console.warn = function(message) {
+            var error = new Error();
+            console.log(error.stack);
+
+            originalWarn.call(console, message);
+        }
+
+    </script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+
+    <!-- CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.18.2/codemirror.css"/>
+
+    <!-- Firepad -->
+    <link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.4.0/firepad.css" />
+    <script src="https://cdn.firebase.com/libs/firepad/1.4.0/firepad.js"></script>
+
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body { margin: 0; height: 100%; position: relative; }
+
+        #firepad {
+            width: 100%;
+            height: 95%;
+        }
+        
+        #footer {
+            height: 16px;
+            width: 90%;
+            background-color: black;
+            color: white;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="firepad"></div>
+    <div id="footer"></div>
+    <script>
+        var firepad;
+    
+        window.addEventListener("load", function() {
+            fetch("firepad.json").then(function (response) {
+                return response.json();
+            }).then(function (credentials) {
+                // Initialize the Firebase SDK.
+                firebase.initializeApp(credentials);
+
+                initialize();
+            });
+        });
+
+        var initialized = false;
+        var isfirepadready = false;
+        function initialize() {
+            if (initialized) return;
+            initialized = true;
+            // Get Firebase Database reference.
+            var firepadRef = firebase.database().ref();
+
+            // Create CodeMirror (with lineWrapping on).
+            var codeMirror = CodeMirror(document.getElementById('firepad'), { lineWrapping: true });
+
+            // Create Firepad (with rich text toolbar and shortcuts enabled).
+            firepad = Firepad.fromCodeMirror(firepadRef, codeMirror,
+                    { richTextShortcuts: true, richTextToolbar: true, defaultText: 'Hello, World!' });
+            firepad.on('ready', function() {
+                isfirepadready = true;
+            });
+        }
+        
+        
+        // http://stackoverflow.com/a/901144/2772461
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        
+        
+        document.getElementById("footer").addEventListener("click", function() {
+            var content = document.getElementsByTagName("textarea");
+            if (content.length > 0) {
+                content.item(0).focus();
+                footer.style="background-color: yellow;";
+            }
+        });
+        
+        if (getParameterByName("footer") === "") {
+            function updateFooter(event) {
+                var content = event.target;
+                var footer = document.getElementById("footer");
+                if (footer.childNodes.length > 0) {
+                    var prevtext = footer.childNodes.item(0);
+                    footer.removeChild(prevtext);
+                }
+                var text = `${content.selectionDirection}, start: ${content.selectionStart}, end: ${content.selectionEnd}, value: ${content.value}`;
+                footer.appendChild(document.createTextNode(text));
+            }
+            
+            var textareas = document.getElementsByTagName("textarea");
+            var interval;
+            var footerSetUp = false;
+            function setUpFooter() {
+                if (footerSetUp) {
+                    footerSetUp = true;
+                    window.clearInterval(interval);
+                    return;
+                }
+            
+                if (textareas.length > 0) {
+                    footerSetUp = true;
+                    window.clearInterval(interval);
+                    
+                    var content = textareas.item(0);
+                    content.addEventListener("input", updateFooter);
+                    content.addEventListener("blur", updateFooter);
+                    content.addEventListener("focus", updateFooter);
+                    content.addEventListener("select", updateFooter);
+                }
+            }
+            
+            interval = window.setInterval(setUpFooter, 100);
+            
+        } else if (getParameterByName("focus") === "") {
+        
+            window.setTimeout(function() {
+                var footer = document.getElementById("footer");
+                footer.click();
+            }, 10000);
+        
+        } else {
+            document.getElementById("footer").style = "display:none;";
+        }
+    </script>
+</body>
+</html>

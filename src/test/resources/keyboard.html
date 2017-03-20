@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Keyboard Event Test</title>
+</head>
+<body>
+    <input id="inp" type="text">
+    <table id="output">
+        <tr>
+            <th>Event</th>
+            <th>key</th>
+            <th>code</th>
+            <th>keyCode</th>
+            <th>charCode</th>
+            <th>which</th>
+            <th>ctrlKey</th>
+            <th>shiftKey</th>
+            <th>altKey</th>
+        </tr>
+    </table>
+    <script>
+        var $ = document.querySelector.bind(document);
+        var output = $("#output");
+        var inp = $("#inp");
+        function td(experimentSpec) {
+            var tdEl = document.createElement("td");
+            var text = document.createTextNode(experimentSpec);
+            tdEl.appendChild(text);
+            return tdEl;
+        }
+        function append(hand, e) {
+            var tr = document.createElement("tr");
+            var cols = [hand, e.key, e.code, e.keyCode, e.charCode, e.which, e.ctrlKey, e.shiftKey, e.altKey];
+            cols.forEach(function(experimentSpec) {
+                tr.appendChild(td(experimentSpec));
+            });
+            output.appendChild(tr);
+        }
+        inp.addEventListener("keydown", function(e) {
+            append("keydown", e);
+        });
+        inp.addEventListener("keypress", function(e) {
+            append("keypress", e);
+            inp.value += e.key;
+        });
+        inp.addEventListener("keyup", function(e) {
+            append("keyup", e);
+        });
+    </script>
+</body>
+</html>

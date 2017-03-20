@@ -1,0 +1,25 @@
+/*noinspection CssUnusedSymbol*/
+.list-cell {
+    -fx-font-size: 18px;
+}
+
+/*noinspection CssUnusedSymbol*/
+.combo-box-base {
+    -fx-font-size: 18px;
+}
+
+/*noinspection CssUnusedSymbol*/
+.tab-header-area {
+    -fx-font-size: 18px;
+}
+
+/*noinspection CssUnusedSymbol*/
+.boxed-image-view {
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.table-view .column-header .label {
+    -fx-text-alignment: center;
+}

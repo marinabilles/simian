@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Overlapping Elements</title>
+    <style>
+        #inbehind {
+            height: 100px;
+            width: 100px;
+            background-color: #FF0000;
+        }
+
+        #infront {
+            height:100px;
+            width: 100px;
+            background-color: #FFFF00;
+            margin-left: auto;
+            margin-right: auto;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="inbehind">
+
+    </div>
+    <div id="infront">
+
+    </div>
+
+    <div id="output"></div>
+    <script>
+        var $ = document.querySelector.bind(document);
+        function registerClick(event) {
+            var newClick = event.target.id + " (" + event.clientX + "," + event.clientY + ")";
+            var output = $("#output");
+            output.appendChild(document.createTextNode(newClick));
+            output.appendChild(document.createElement("br"));
+        }
+
+        $("#inbehind").addEventListener("click", registerClick);
+        $("#infront").addEventListener("click", registerClick);
+    </script>
+</body>
+</html>

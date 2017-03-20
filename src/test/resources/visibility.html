@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visibility Test</title>
+    <style>
+        div {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        #clickhere {
+            padding: 5em;
+            background-color: #77a029;
+        }
+
+        #menu {
+            padding: 3em;
+            background-color: darkorange;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="clickhere">
+        Click here
+    </div>
+
+    <div id="menu" class="hidden">
+        Lorem ipsum dolor shit amet consectetur adipisdicng velitr.
+    </div>
+    <script>
+        var clickhere = document.getElementById("clickhere");
+        var menu = document.getElementById("menu");
+
+        var hidden = true;
+
+        clickhere.addEventListener("click", function() {
+            if (hidden) {
+                hidden = false;
+                menu.className = "";
+            } else {
+                hidden = true;
+                menu.className = "hidden";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -25,7 +25,7 @@ The constructor for `SetExperimentSpec` takes the following arguments:
 
 * `Set<Interaction>` -- a set of implemented actions such as "write the letter A" and "select the text before the previous cursor position and make it bold".
 
-    ```java
+```java
 class MyAction implements Interaction {
     private transient WebDriver driver;
     void setDriver(WebDriver driver) {
@@ -39,7 +39,7 @@ class MyAction implements Interaction {
         WebActions.sendKeys(textinput, "a");
     }
 }
-    ```
+```
 
 * `Combinator` -- a class implementing the following methods:
     * `combine(List<Interaction>)` -- this method returns a `CombinedTest` object, whose `test` method executes the provided interactions sequentially, equivalent to a single thread's part of the concurrent execution phase of Simian.
@@ -134,7 +134,7 @@ class MyAction implements Interaction {
 
 * `TestInit` -- an initialization script that makes sure the document that has been opened is empty. This is called on one of the two clients before each sequential or parallel test.
 
-    ```java
+```java
 class MyInit extends TestInit {
     @Override
     protected void init() throws InterruptedException {
@@ -144,7 +144,7 @@ class MyInit extends TestInit {
         textinput.clear();
     }
 }
-    ```
+```
 
 * `sender` and `receiver` used to adjust the clients' cursor positions after the sequential prefix of a multi-client interaction.
 

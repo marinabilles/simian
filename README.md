@@ -6,6 +6,13 @@ This repository contains **Simian**, our approach for discovering bugs in collab
 
 Marina Billes, Anders Møller, and Michael Pradel. Systematic Black-Box Analysis of Collaborative Web Applications. PLDI '17.
 
+## Requirements
+
+* Java version 8 or higher.
+* JavaFX version 8 or higher.
+* Maven.
+* Selenium Grid server and clients running in separate X server sessions on the same machine.
+
 ## Installation
 
 ### 1. Setting up the system environment

@@ -61,9 +61,9 @@ public class ReadDiffMap {
 
         List<byte[]> stateImages = new ArrayList<>();
         List<String> stateDescs = new ArrayList<>();
-        stateScreenshotMap.entrySet().forEach(e -> {
-            stateImages.add(e.getValue());
-            stateDescs.add(e.getKey().toString());
+        stateScreenshotMap.forEach((key, value) -> {
+            stateImages.add(value);
+            stateDescs.add(key.toString());
         });
 
         System.out.println(diffMap.entrySet().stream().mapToInt(pair ->
@@ -74,7 +74,7 @@ public class ReadDiffMap {
             System.out.println("------------------------");
 
             MapMap<ExplorationState, Interaction, DiffWrapper> diffCopyMap = new MapMap<>();
-            diffMap.entrySet().forEach(e -> diffCopyMap.put(e.getKey(), e.getValue()));
+            diffMap.forEach(diffCopyMap::put);
             SetMap<ExplorationState, UnorderedPair<Interaction>> testMap =
                     GuidedStateSpaceExplorer.inferOverlaps(diffCopyMap, stateScreenshotMap,
                             spec.exclusionRectangles);
@@ -114,8 +114,7 @@ public class ReadDiffMap {
 
             Map<Integer, Set<ExplorationState>> reverseClassMap = new HashMap<>();
             IntStream.range(0, classIndex).forEach(i -> reverseClassMap.put(i, new HashSet<>()));
-            equivalenceClassMap.entrySet().forEach(entry ->
-                reverseClassMap.get(entry.getValue()).add(entry.getKey()));
+            equivalenceClassMap.forEach((key, value) -> reverseClassMap.get(value).add(key));
 
             for (Map.Entry<Integer, Set<ExplorationState>> entry : reverseClassMap.entrySet()) {
                 if (!entry.getValue().isEmpty()) {
@@ -141,14 +140,12 @@ public class ReadDiffMap {
                             e2.getKey().toString().equals("GDocsWrite{Keys.HOME}");
             Predicate<Map.Entry<Interaction, DiffWrapper>> pTrue = e2 -> true;
 
-            diffMap.entrySet().forEach(e ->
-                e.getValue().entrySet().stream().filter(pTrue)
-                        .forEach(e2 -> {
-                            descriptions.add(e.getKey().toString() + ": " + e2.getKey());
-                            e2.getValue().unzip();
-                            diffs.add(Lists.newArrayList(e2.getValue().get()));
-                        })
-            );
+            diffMap.forEach((key, value) -> value.entrySet().stream().filter(pTrue)
+                    .forEach(e2 -> {
+                        descriptions.add(key.toString() + ": " + e2.getKey());
+                        e2.getValue().unzip();
+                        diffs.add(Lists.newArrayList(e2.getValue().get()));
+                    }));
 
             SequenceImageFrame.view(diffs, descriptions);
 

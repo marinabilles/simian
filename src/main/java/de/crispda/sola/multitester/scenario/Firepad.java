@@ -47,11 +47,11 @@ public class Firepad {
                 Keys.RETURN, Keys.BACK_SPACE, Keys.DELETE, Keys.TAB
         ).forEach(cw -> writes.add(chars(cw)));
 
-        Lists.newArrayList(
+        writes.addAll(Lists.newArrayList(
                 chars("text", Keys.RETURN),
                 chars(Keys.BACK_SPACE, Keys.BACK_SPACE, Keys.BACK_SPACE),
                 chars(Keys.BACK_SPACE, "a")
-        ).forEach(writes::add);
+        ));
 
         writes.forEach(w -> set.add(new FirepadWrite(w)));
 
